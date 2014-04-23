@@ -1,22 +1,35 @@
 package comport;
 
 import java.util.Iterator;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author patje
  */
+ 
 public class CheckPorts extends javax.swing.JFrame {
 
     /**
      * Creates new form CheckPorts
      */
+    CommPort cp = new CommPort();
+    boolean statusOpen;
+    boolean statusClose;
+    String recivedDataHist;
+    String recivedData;
+    
+    
     public CheckPorts() {
-        super("Arduino test applicatie");
-        initComponents();
-       
-       getAvailibleCommPorts(); 
-       
+    super("Arduino test applicatie");
+    initComponents();
+    statusOpen = false;
+    statusClose = true;
+    btnDisonnect.setEnabled(false);
+    getAvailibleCommPorts();
+    recivedDataHist="";
+    recivedData="";
     }
 
     /**
@@ -28,29 +41,188 @@ public class CheckPorts extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jClistOfPorts = new javax.swing.JComboBox();
+        jCBaudRates = new javax.swing.JComboBox();
+        btnConnect = new javax.swing.JButton();
+        btnDisonnect = new javax.swing.JButton();
+        ProgressConnection = new javax.swing.JProgressBar();
+        btnCheckForData = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationByPlatform(true);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jClistOfPorts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jClistOfPortsActionPerformed(evt);
+            }
+        });
+
+        jCBaudRates.setMaximumRowCount(11);
+        jCBaudRates.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "300", "1200", "2400", "4800", "9600", "14400", "19200", "28800", "38400", "57600", "115200", "", "", "" }));
+        jCBaudRates.setSelectedIndex(4);
+        jCBaudRates.setToolTipText("");
+        jCBaudRates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCBaudRatesActionPerformed(evt);
+            }
+        });
+
+        btnConnect.setText("Connect");
+        btnConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnectActionPerformed(evt);
+            }
+        });
+
+        btnDisonnect.setText("Disconnect");
+        btnDisonnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisonnectActionPerformed(evt);
+            }
+        });
+
+        btnCheckForData.setText("Check dor Data");
+        btnCheckForData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckForDataActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jClistOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jCBaudRates, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnConnect)
+                .addGap(18, 18, 18)
+                .addComponent(btnDisonnect)
+                .addGap(18, 18, 18)
+                .addComponent(btnCheckForData)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(ProgressConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jClistOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCBaudRates, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConnect)
+                        .addComponent(btnDisonnect)
+                        .addComponent(btnCheckForData))
+                    .addComponent(ProgressConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jClistOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jClistOfPorts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
+                .addComponent(jButton1)
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jClistOfPortsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jClistOfPortsActionPerformed
+       cp.setSelectedCommport(jClistOfPorts.getSelectedItem().toString());
+    }//GEN-LAST:event_jClistOfPortsActionPerformed
+
+    private void jCBaudRatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBaudRatesActionPerformed
+        cp.setBaudRate( Integer.parseInt(this.jCBaudRates.getSelectedItem().toString()));
+    }//GEN-LAST:event_jCBaudRatesActionPerformed
+
+    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
+       
+        try
+       {
+           statusOpen = cp.openCommPort();
+       }
+       catch (Exception ex)
+       {
+           statusOpen = false;
+           JOptionPane.showMessageDialog(this, "Something went wrong with opening or reading of the Commport " + ex,"Communictions Port message",JOptionPane.WARNING_MESSAGE);
+       }
+       if (statusOpen)
+       {
+           btnDisonnect.setEnabled(true);
+           btnConnect.setEnabled(false);
+           jCBaudRates.setEnabled(false);
+           jClistOfPorts.setEnabled(false);
+       }
+    }//GEN-LAST:event_btnConnectActionPerformed
+
+    private void btnDisonnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisonnectActionPerformed
+       
+        statusClose = cp.closeCommPort();
+        if (statusClose)
+        {
+           btnDisonnect.setEnabled(false);
+           btnConnect.setEnabled(true);
+           jCBaudRates.setEnabled(true);
+           jClistOfPorts.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnDisonnectActionPerformed
+
+    private void btnCheckForDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckForDataActionPerformed
+        cp.readData();
+    }//GEN-LAST:event_btnCheckForDataActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        recivedData = cp.getReceivedData();
+        this.jTextArea1.setText(recivedData);
+        
+        if (!recivedDataHist.equals(recivedData))
+        {        
+            this.jTextArea1.setText(cp.getReceivedData());
+        }
+        recivedDataHist=recivedData;
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,13 +240,7 @@ public class CheckPorts extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CheckPorts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CheckPorts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CheckPorts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CheckPorts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -89,12 +255,20 @@ public class CheckPorts extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar ProgressConnection;
+    private javax.swing.JButton btnCheckForData;
+    private javax.swing.JButton btnConnect;
+    private javax.swing.JButton btnDisonnect;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jCBaudRates;
     private javax.swing.JComboBox jClistOfPorts;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
     private void getAvailibleCommPorts()
     {
-        checkAvailPorts cp = new checkAvailPorts();
        Iterator it = cp.getListOfPorts().iterator();
        while ( it.hasNext())
        {
